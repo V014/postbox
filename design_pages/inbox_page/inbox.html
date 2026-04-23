@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#FFF8F7",
+              "primary": "#AF101A",
+              "on-primary": "#ffffff",
+              "primary-container": "#D32F2F",
+              "on-primary-container": "#FFDAD6",
+              "secondary": "#775652",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#FFDAD6",
+              "on-secondary-container": "#2D1512",
+              "tertiary": "#715B29",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#FDDFA6",
+              "on-tertiary-container": "#261900",
+              "error": "#BA1A1A",
+              "on-error": "#ffffff",
+              "background": "#FFF8F7",
+              "on-background": "#231A19",
+              "surface-variant": "#F5DDDA",
+              "on-surface-variant": "#534341",
+              "outline": "#857371",
+              "surface-container-low": "#FFF1EF",
+              "surface-container": "#F9EBE9",
+              "surface-container-high": "#F3E5E3",
+              "surface-container-highest": "#EDE0DE",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-background min-h-screen pb-32">
+<!-- TopAppBar Component (from COMPONENTS_8) -->
+<nav class="fixed top-0 w-full z-50 bg-[#FFF8F7] dark:bg-gray-950 shadow-[0_10px_40px_0_rgba(39,24,22,0.06)]">
+<div class="flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#AF101A] dark:text-[#D32F2F] active:scale-95 transition-transform duration-200" data-icon="menu">menu</span>
+<span class="text-2xl font-bold text-[#AF101A] dark:text-[#D32F2F] tracking-[-0.02em] font-['Manrope']">Postbox</span>
+</div>
+<div class="h-10 w-10 rounded-full flex items-center justify-center overflow-hidden border-2 border-[#AF101A]/10 active:scale-95 transition-transform duration-200">
+<img alt="User" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChY9kK1stUiIuqUz22gey9Cy9f6Czj6ldnLvPD16V9SDo9eWIB1rMq5_TbZyYUw5NlhXeG0OfpceC2EvTKOyECG-JPBv5wAwHOw8d8eY-ZLBaWFkHrUjQwcO9L9Sh8MuHp7FoglNJI4Peq-E4ebY6rT6IGfR2mXgdXI6TliwKJ9Te2okxDuRK3T1mhLeSUFgfaY1TzJIAdL-T_4exhZNRgv7J62t2TAWrpeh4WDylSsoib2dYi7c62O81fP9-zf1HxD5jGlznncJ0"/>
+</div>
+</div>
+</nav>
+<main class="mt-24 px-6 space-y-8">
+<!-- Subscription Status Card -->
+<section>
+<div class="bg-primary-container rounded-[1.5rem] p-6 text-on-primary relative overflow-hidden shadow-xl bg-gradient-to-br from-primary to-primary-container">
+<div class="relative z-10 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label text-xs uppercase tracking-[0.2em] text-on-primary/80 mb-1">Subscription Status</p>
+<h2 class="font-headline text-3xl font-extrabold">Days Remaining: 12</h2>
+</div>
+<div class="bg-white/20 px-3 py-1 rounded-full border border-white/30 backdrop-blur-sm">
+<span class="text-[10px] font-bold uppercase tracking-wider text-white">Premium Plus</span>
+</div>
+</div>
+<button class="w-full bg-surface-container-lowest text-primary font-headline font-bold py-4 rounded-full transition-all duration-300 active:scale-95 flex items-center justify-center gap-2">
+                    Renew Now
+                    <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Abstract Glow Decor -->
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-white rounded-full blur-[60px] opacity-10"></div>
+</div>
+</section>
+<!-- Search and Filter Section -->
+<section class="space-y-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full bg-surface-container-high border-none rounded-full py-4 pl-12 pr-6 focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline font-body" placeholder="Search tracking numbers, senders..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<button class="whitespace-nowrap px-6 py-2 bg-primary text-on-primary rounded-full font-label text-xs font-semibold">All Items</button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-label text-xs font-semibold">Letters</button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-label text-xs font-semibold">Packages</button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-label text-xs font-semibold">Magazines</button>
+</div>
+</section>
+<!-- New Mail Section -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<h3 class="font-headline text-xl font-bold text-primary">New Mail</h3>
+<span class="font-label text-xs font-bold text-outline uppercase tracking-widest">3 Items Today</span>
+</div>
+<div class="grid gap-4">
+<!-- Package Card -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] p-6 shadow-sm flex items-center gap-5 group active:scale-98 transition-transform border border-surface-container">
+<div class="w-16 h-16 bg-secondary-container flex items-center justify-center rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-3xl" data-icon="package_2">package_2</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-headline font-bold text-on-background truncate">TechGear Inc.</h4>
+<span class="bg-primary/10 text-primary px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Package</span>
+</div>
+<p class="font-body text-sm text-on-surface-variant truncate mb-2">Electronic Components - TG-90210</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(175,16,26,0.6)]"></span>
+<span class="font-label text-[11px] font-medium text-outline uppercase tracking-wider">In Transit • Arriving Sat</span>
+</div>
+</div>
+</div>
+<!-- Letter Card 1 -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] p-6 shadow-sm flex items-center gap-5 active:scale-98 transition-transform border border-surface-container">
+<div class="w-16 h-16 bg-surface-container-high flex items-center justify-center rounded-full text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-3xl" data-icon="description">description</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-headline font-bold text-on-background truncate">Metropolitan Bank</h4>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Letter</span>
+</div>
+<p class="font-body text-sm text-on-surface-variant truncate mb-2">Annual Financial Statement 2023</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="schedule">schedule</span>
+<span class="font-label text-[11px] font-medium text-outline uppercase tracking-wider">Delivered 2h ago</span>
+</div>
+</div>
+</div>
+<!-- Letter Card 2 -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] p-6 shadow-sm flex items-center gap-5 active:scale-98 transition-transform border border-surface-container">
+<div class="w-16 h-16 bg-surface-container-high flex items-center justify-center rounded-full text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-3xl" data-icon="mail">mail</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-headline font-bold text-on-background truncate">Gov Services</h4>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Letter</span>
+</div>
+<p class="font-body text-sm text-on-surface-variant truncate mb-2">Tax Registration Renewal</p>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="priority_high">priority_high</span>
+<span class="font-label text-[11px] font-bold uppercase tracking-wider">Action Required</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Component (from COMPONENTS_8) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#FFF8F7]/70 dark:bg-gray-950/70 backdrop-blur-xl border-t border-[#271816]/10 dark:border-white/10 z-50">
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#AF101A] to-[#D32F2F] text-white rounded-lg px-4 py-1 scale-105 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="inbox" style="font-variation-settings: 'FILL' 1;">inbox</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-[0.05em]">Inbox</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#271816]/60 dark:text-gray-400 px-4 py-1 hover:bg-[#AF101A]/5 dark:hover:bg-white/5 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="send">send</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-[0.05em]">Sent</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#271816]/60 dark:text-gray-400 px-4 py-1 hover:bg-[#AF101A]/5 dark:hover:bg-white/5 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="draft">draft</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-[0.05em]">Drafts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#271816]/60 dark:text-gray-400 px-4 py-1 hover:bg-[#AF101A]/5 dark:hover:bg-white/5 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="archive">archive</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-[0.05em]">Archive</span>
+</a>
+</nav>
+<!-- Contextual FAB for Scanning -->
+<button class="fixed bottom-28 right-6 w-16 h-16 rounded-full bg-gradient-to-br from-[#AF101A] to-[#D32F2F] text-on-primary shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="add_a_photo">add_a_photo</span>
+</button>
+</body></html>

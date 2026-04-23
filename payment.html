@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Postbox - Subscription &amp; Payment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#FFF8F7",
+                        "primary-container": "#FFDAD6",
+                        "on-primary-fixed": "#410002",
+                        "on-background": "#271816",
+                        "on-surface": "#271816",
+                        "surface-container-high": "#F5DDD8",
+                        "error": "#BA1A1A",
+                        "on-tertiary-container": "#410002",
+                        "on-tertiary-fixed": "#410002",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#EED8D3",
+                        "on-tertiary-fixed-variant": "#93000A",
+                        "primary-fixed-dim": "#FFB4AB",
+                        "inverse-surface": "#392E2D",
+                        "surface-container": "#FAEEEB",
+                        "inverse-primary": "#FFB4AB",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#FFF8F7",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#2e4867",
+                        "surface-dim": "#E7D6D3",
+                        "outline-variant": "#D8C2BF",
+                        "on-primary-container": "#410002",
+                        "secondary": "#775652",
+                        "inverse-on-surface": "#FFEDE9",
+                        "tertiary-fixed-dim": "#FFB4AB",
+                        "secondary-fixed-dim": "#E7BDB7",
+                        "outline": "#857371",
+                        "primary": "#AF101A",
+                        "primary-fixed": "#FFDAD6",
+                        "secondary-container": "#FFDAD6",
+                        "on-primary-fixed-variant": "#93000A",
+                        "background": "#FFF8F7",
+                        "on-surface-variant": "#534341",
+                        "surface-container-low": "#FFF1EF",
+                        "surface-tint": "#AF101A",
+                        "surface-variant": "#F5DDD8",
+                        "on-error-container": "#410002",
+                        "secondary-fixed": "#FFDAD6",
+                        "on-secondary-fixed": "#2C1512",
+                        "tertiary-fixed": "#FFDAD6",
+                        "error-container": "#FFDAD6",
+                        "tertiary-container": "#FFDAD6",
+                        "on-secondary-container": "#2C1512",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#AF101A",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .signature-cta {
+            background: linear-gradient(135deg, #AF101A 0%, #D32F2F 100%);
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen">
+<!-- TopAppBar Section (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-[#FFF8F7] dark:bg-gray-950 shadow-[0_10px_40px_0_rgba(39,24,22,0.06)]">
+<div class="flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#AF101A] dark:text-[#D32F2F]">menu</span>
+<h1 class="text-2xl font-bold text-[#AF101A] dark:text-[#D32F2F] tracking-[-0.02em] font-headline">Postbox</h1>
+</div>
+<div class="h-10 w-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/20 active:scale-95 transition-transform duration-200">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Professional headshot of a user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNiIWD5ztxeGPKEwDEl8F5o7zrfI_b2SqP3NWc-WAy4uwl15ar8nSj-CnthoC247EBnmF1D7GW4-Krn_fCO9HJiQ0bp_9Osumk-Pwag7tccTeoB2TSsiIdztJUkE2Dj4wcFHM48pf3wcyUPZYioSCI5c6CdqUlwbbyfStEFt7ezt1CR2Hc5mYmmV2RwmS-nnXnzH0mG2CqiZZDxXXe2kd42pRAUwJeMeeURr-x9rKSxu1we7oFwHAGkBxS6xMTRs6tmQhpwsbggQY"/>
+</div>
+</div>
+<div class="bg-[#FFF8F7] dark:bg-gray-900 h-[1px] w-full"></div>
+</nav>
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto">
+<!-- Header Section -->
+<header class="mb-12">
+<span class="font-label font-bold text-[10px] uppercase tracking-[0.2em] text-on-surface-variant/70 block mb-2">Subscription Management</span>
+<h2 class="font-headline font-extrabold text-4xl tracking-tight text-primary">Your Premium Membership</h2>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Current Plan & Upgrade -->
+<div class="lg:col-span-7 space-y-6">
+<!-- Current Plan Card (Bento Style) -->
+<section class="bg-surface-container-lowest rounded-full p-8 relative overflow-hidden shadow-sm border border-surface-container-high">
+<div class="flex justify-between items-start mb-10">
+<div>
+<h3 class="font-headline font-bold text-xl text-primary mb-1">Standard Monthly</h3>
+<p class="text-on-surface-variant font-medium text-sm">Active since Nov 2023</p>
+</div>
+<div class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-sm">
+                            ACTIVE
+                        </div>
+</div>
+<div class="flex items-baseline gap-2 mb-8">
+<span class="font-headline font-extrabold text-5xl tracking-tighter text-primary">$15.00</span>
+<span class="font-label font-semibold text-sm text-on-surface-variant uppercase tracking-widest">/ month</span>
+</div>
+<div class="flex flex-col sm:flex-row gap-3">
+<div class="flex-1 bg-surface-container-low p-4 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">package_2</span>
+<span class="text-sm font-semibold">Unlimited Digital Scanning</span>
+</div>
+<div class="flex-1 bg-surface-container-low p-4 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-sm font-semibold">Address Shielding</span>
+</div>
+</div>
+</section>
+<!-- Switch to Annual (Editorial Callout) -->
+<section class="bg-primary p-8 rounded-full text-on-primary flex flex-col md:flex-row items-center gap-6 justify-between overflow-hidden relative shadow-lg">
+<!-- Subtle Glow -->
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-[#D32F2F] rounded-full blur-[60px] opacity-40"></div>
+<div class="relative z-10">
+<h4 class="font-headline font-bold text-lg mb-1">Switch to Annual Billing</h4>
+<p class="text-white/80 text-sm">Save 25% by paying yearly. Pay only $135.00/year.</p>
+</div>
+<button class="relative z-10 bg-surface-container-lowest text-primary px-6 py-3 rounded-full font-bold text-sm tracking-tight transition-all active:scale-95 hover:bg-primary-fixed">
+                        Upgrade &amp; Save
+                    </button>
+</section>
+</div>
+<!-- Right Column: Payment Details (Floating Surface) -->
+<div class="lg:col-span-5">
+<div class="bg-surface-container-low rounded-full p-8 shadow-sm">
+<h3 class="font-headline font-bold text-xl text-primary mb-8">Secure Payment</h3>
+<form class="space-y-6">
+<div class="space-y-2">
+<label class="font-label font-bold text-[10px] uppercase tracking-widest text-on-surface-variant ml-1">Card Number</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50">credit_card</span>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-4 pl-12 pr-4 text-on-surface font-mono placeholder:text-outline-variant focus:ring-2 focus:ring-primary/20 transition-all" placeholder="0000 0000 0000 0000" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="font-label font-bold text-[10px] uppercase tracking-widest text-on-surface-variant ml-1">Expiry Date</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-4 px-4 text-on-surface font-mono placeholder:text-outline-variant focus:ring-2 focus:ring-primary/20 transition-all text-center" placeholder="MM / YY" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label font-bold text-[10px] uppercase tracking-widest text-on-surface-variant ml-1">CVV</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-4 px-4 text-on-surface font-mono placeholder:text-outline-variant focus:ring-2 focus:ring-primary/20 transition-all text-center" placeholder="***" type="password"/>
+</div>
+</div>
+<div class="pt-4 space-y-4">
+<div class="flex justify-between items-center px-1">
+<span class="text-on-surface-variant font-medium text-sm">Due Today</span>
+<span class="text-primary font-headline font-bold text-lg">$15.00</span>
+</div>
+<button class="signature-cta w-full py-5 rounded-full text-on-primary font-headline font-extrabold text-sm uppercase tracking-[0.15em] transition-all hover:scale-[1.02] active:scale-95 shadow-xl shadow-primary/20" type="submit">
+                                Confirm &amp; Pay
+                            </button>
+<p class="text-[10px] text-center text-on-surface-variant/60 leading-relaxed px-4">
+                                By clicking 'Confirm &amp; Pay', you agree to our Terms of Service. Your card will be charged monthly.
+                            </p>
+</div>
+</form>
+</div>
+<!-- Trust Badge -->
+<div class="mt-6 flex items-center justify-center gap-4 text-on-surface-variant/40">
+<span class="material-symbols-outlined text-lg">lock</span>
+<span class="font-label text-[10px] font-bold uppercase tracking-widest">Bank-Level Security Guaranteed</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Section (Shared Component) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#FFF8F7]/70 dark:bg-gray-950/70 backdrop-blur-xl z-50 border-t border-[#271816]/10 dark:border-white/10 md:hidden">
+<a class="flex flex-col items-center justify-center text-[#271816]/60 dark:text-gray-400 px-4 py-1 hover:bg-[#AF101A]/5 dark:hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">inbox</span>
+<span class="font-headline text-[10px] font-medium uppercase tracking-[0.05em] mt-1">Inbox</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#271816]/60 dark:text-gray-400 px-4 py-1 hover:bg-[#AF101A]/5 dark:hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-headline text-[10px] font-medium uppercase tracking-[0.05em] mt-1">Scanner</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#AF101A] to-[#D32F2F] text-white rounded-lg px-4 py-1 scale-105 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-headline text-[10px] font-medium uppercase tracking-[0.05em] mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

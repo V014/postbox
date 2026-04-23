@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#FFF8F7",
+                        "primary": "#AF101A",
+                        "primary-container": "#D32F2F",
+                        "on-primary": "#ffffff",
+                        "on-background": "#271816",
+                        "on-surface": "#271816",
+                        "surface-container-high": "#FDE8E7",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#FDE8E7",
+                        "secondary": "#725654",
+                        "secondary-container": "#FDE8E7",
+                        "on-secondary-container": "#AF101A",
+                        "on-surface-variant": "#534342",
+                        "outline": "#857371",
+                        "surface-container-low": "#FFF1F0",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#E6D6D4"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #FFF8F7;
+            color: #271816;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen pb-32">
+<!-- TopAppBar Shell (Updated with shared component style) -->
+<header class="fixed top-0 w-full z-50 bg-[#FFF8F7] backdrop-blur-xl shadow-[0_10px_40px_0_rgba(39,24,22,0.06)]">
+<div class="flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="transition-transform duration-200 active:scale-95 text-[#AF101A]">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-['Manrope'] font-semibold tracking-tight text-[#271816]">Postbox</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold overflow-hidden transition-opacity hover:opacity-80">
+<img alt="User" data-alt="User profile photo of a person" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs8VZCXIvcW28QagQj5uhhTxqB7Yto9jC_ev893Z6wnH9cZ_JeXlYleq5-UVyKwVUrkE4Wu80Q61jG28ZF-2fEP_z3T2II0BA8Ezs5AzUR5hf_ryy-iZWw8qOzT7xwXRXhdikS8Lhp34Ku16duzt0T1NXdPqs2IlgNqW-7XJ2StfRTY2J0K25CyViJjbt_9fm_YGdWZRftDk4x9zmS9kff2ZsiqekAmZ7GJJmQPlB9eu3cvlkvNZUbDz3IfMHeq4qGaPpRZfN9IZU"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-6 md:max-w-3xl md:mx-auto">
+<!-- Editorial Header Section -->
+<section class="mb-10">
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-widest rounded-full mb-4 ring-1 ring-primary/10">
+            In Transit
+        </span>
+<h2 class="font-headline font-extrabold text-4xl text-primary tracking-tighter leading-none mb-2">
+            #AZ-9921-X01
+        </h2>
+<p class="text-on-surface-variant font-medium text-sm">Arriving from Amazon.com • Seattle, WA</p>
+</section>
+<!-- Asymmetric Media Card -->
+<div class="relative mb-12 rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm">
+<div class="aspect-[4/3] w-full bg-surface-container-high relative">
+<img alt="Package Image" class="w-full h-full object-cover" data-alt="A clean cardboard shipping box on a white surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7Pj_BJ8H6Jy4zqpkVirPd4h4EWDgZ7BHszv-aVaD1HdzBZK3UrVV8U-PhuDrgSElmDejMOxDZoBBm3i2BiJ_i1dEe3Prw3hxxCG7s7SvJwx8JSMa9Stu-5o1cKpHn3GASZNU4phK6jmT5XIDvlUureKd2LiNVeW3mgRgcN-Q4CN8x6nh1gCPCIy4JbNiZxKg13Z-tA2u6KtfLQvHp4IvV6RPhJiDvA7qTBUyEqY11t-eVEX_yYQaUu3cLxFQeuLKQm22cAbkhvKI"/>
+<!-- Glassmorphism Status Overlay -->
+<div class="absolute bottom-6 left-6 right-6 p-4 bg-surface/80 backdrop-blur-xl rounded-xl border border-white/20 flex justify-between items-center">
+<div>
+<p class="text-[10px] uppercase tracking-widest font-bold text-outline">Weight</p>
+<p class="font-headline font-bold text-primary">2.4 kg</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] uppercase tracking-widest font-bold text-outline">Dimensions</p>
+<p class="font-headline font-bold text-primary text-sm">30 × 20 × 15 cm</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Details Grid -->
+<div class="space-y-4">
+<div class="bg-surface-container-low p-6 rounded-xl flex items-start gap-4">
+<div class="p-3 bg-surface-container-lowest rounded-full">
+<span class="material-symbols-outlined text-primary">event_upcoming</span>
+</div>
+<div>
+<h3 class="text-[10px] uppercase tracking-widest font-bold text-outline mb-1">Estimated Arrival</h3>
+<p class="font-headline font-bold text-primary text-lg">Thursday, Oct 24</p>
+<p class="text-on-surface-variant text-sm font-medium">By end of day (8:00 PM)</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-6 rounded-xl flex items-start gap-4">
+<div class="p-3 bg-surface-container-lowest rounded-full text-primary">
+<span class="material-symbols-outlined">storefront</span>
+</div>
+<div>
+<h3 class="text-[10px] uppercase tracking-widest font-bold text-outline mb-1">Sender</h3>
+<p class="font-headline font-bold text-primary">Amazon.com</p>
+<p class="text-on-surface-variant text-sm">Verified Merchant</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl flex items-start gap-4">
+<div class="p-3 bg-surface-container-lowest rounded-full text-primary">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<div>
+<h3 class="text-[10px] uppercase tracking-widest font-bold text-outline mb-1">Pickup Point</h3>
+<p class="font-headline font-bold text-primary">Locker #42</p>
+<p class="text-on-surface-variant text-sm">Main Terminal</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Section -->
+<div class="mt-12 space-y-4">
+<button class="w-full py-5 px-6 rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-lg flex items-center justify-center gap-3 shadow-lg active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+            Scan QR Code to Verify
+        </button>
+<button class="w-full py-4 px-6 rounded-xl bg-surface-container-highest text-primary font-headline font-bold text-base flex items-center justify-center gap-3 active:scale-[0.98] transition-all">
+            Mark as Picked Up
+        </button>
+</div>
+</main>
+<!-- Floating Interaction -->
+<div class="fixed bottom-24 right-8 md:hidden">
+<button class="w-16 h-16 rounded-full bg-primary text-on-primary shadow-2xl flex items-center justify-center transition-transform active:scale-90 bg-gradient-to-br from-primary to-primary-container backdrop-blur-xl ring-4 ring-white/10">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+</button>
+</div>
+<!-- Bottom Navigation (Updated with shared component style) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#FFF8F7]/70 backdrop-blur-xl border-t border-[#271816]/10 z-50">
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#AF101A] to-[#D32F2F] text-white rounded-lg px-4 py-1 scale-105 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">inbox</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-[0.05em]">Inbox</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#271816]/60 px-4 py-1 hover:bg-[#AF101A]/5 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">send</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-[0.05em]">Sent</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#271816]/60 px-4 py-1 hover:bg-[#AF101A]/5 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">draft</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-[0.05em]">Drafts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#271816]/60 px-4 py-1 hover:bg-[#AF101A]/5 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">archive</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-[0.05em]">Archive</span>
+</a>
+</nav>
+</body></html>
