@@ -644,6 +644,30 @@
       }
     }
 
+    startBarcodeDetection(video) {
+      if (!('BarcodeDetector' in window) || !video) return;
+
+      const detector = new window.BarcodeDetector({
+        formats: ['qr_code', 'code_128', 'ean_13', 'ean_8', 'itf', 'pdf417']
+      });
+      let scanning = true;
+
+      const scanFrame = async () => {
+        if (!scanning || this.currentView !== 'scan') return;
+        try {
+          const codes = await detector.detect(video);
+          if (codes.length) {
+            scanning = false;
+            const raw = codes[0].rawValue.replace(/\s+/g, '');
+            this.triggerTestScan(raw);
+            setTimeout(() => { scanning = true; }, 2500);
+          }
+        } catch (_) {}
+        requestAnimationFrame(scanFrame);
+      };
+      requestAnimationFrame(scanFrame);
+    }
+
     triggerTestScan(code) {
       if (window.PostboxAudio) window.PostboxAudio.play('scan');
 
