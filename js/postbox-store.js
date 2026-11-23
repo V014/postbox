@@ -421,6 +421,38 @@
       this.saveState();
     }
 
+    verifyDelivery(itemId) {
+      const item = this.getItemById(itemId);
+      if (!item) return { success: false, reason: 'Package not found' };
+
+      item.status = 'delivered';
+      item.statusLabel = 'Delivered & Verified';
+      item.deliveredTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      item.pod = {
+        timestamp: new Date().toISOString(),
+        deliveredBy: item.driverId ? this.state.driver.name : 'Customer scan verification',
+        method: 'barcode_scan',
+        recipientName: this.state.user.name,
+        signatureData: null,
+        note: 'Delivery confirmed from scanned parcel label'
+      };
+      item.history.push({
+        time: item.deliveredTime,
+        title: 'Delivery Verified by Barcode Scan',
+        detail: `Confirmed by ${this.state.user.name}`
+      });
+
+      this.addNotification({
+        title: 'Delivery verified',
+        text: `${item.trackingNumber} has been marked as delivered and verified.`,
+        time: 'Just now',
+        unread: true
+      });
+      this.saveState();
+      if (window.PostboxAudio) window.PostboxAudio.play('success');
+      return { success: true, item };
+    }
+
     // Smart Locker Unlock Simulation
     unlockLocker(lockerId) {
       const locker = this.state.lockers.find(l => l.id == lockerId);
