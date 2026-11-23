@@ -12,7 +12,12 @@ export const initialItems = [
     pickupPoint: "Locker #42 · Blantyre GPO",
     weight: "2.4 kg",
     deliveredTime: null,
-    history: ["Received at Blantyre GPO", "Sorted into courier bay 4", "Assigned to Van 04", "Out for delivery"],
+    history: [
+      "Received at Blantyre GPO",
+      "Sorted into courier bay 4",
+      "Assigned to Van 04",
+      "Out for delivery",
+    ],
   },
   {
     id: "TG-90210",
@@ -27,7 +32,10 @@ export const initialItems = [
     pickupPoint: "Smart Locker #14 · Blantyre GPO",
     weight: "1.1 kg",
     deliveredTime: null,
-    history: ["Shipping label created", "Departed regional distribution centre"],
+    history: [
+      "Shipping label created",
+      "Departed regional distribution centre",
+    ],
   },
   {
     id: "MB-48192",
@@ -42,7 +50,10 @@ export const initialItems = [
     pickupPoint: "Postbox #104 · Digital scan",
     weight: "45 g",
     deliveredTime: "2 hours ago",
-    history: ["Received at sorting desk", "Digitized and added to your postbox"],
+    history: [
+      "Received at sorting desk",
+      "Digitized and added to your postbox",
+    ],
   },
   {
     id: "GOV-77102",
@@ -72,7 +83,10 @@ export const initialItems = [
     pickupPoint: "Smart Locker #18 · Blantyre GPO",
     weight: "280 g",
     deliveredTime: "Yesterday",
-    history: ["Deposited into Smart Locker #18", "Pickup PIN sent to your phone"],
+    history: [
+      "Deposited into Smart Locker #18",
+      "Pickup PIN sent to your phone",
+    ],
   },
 ];
 
