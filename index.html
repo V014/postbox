@@ -922,6 +922,85 @@
   <!-- MODALS & POPUPS                            -->
   <!-- ========================================== -->
 
+  <!-- Scanned Package Delivery Verification -->
+  <div id="delivery-verification-modal" class="hidden fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-[2rem] sm:rounded-[2rem] overflow-hidden shadow-2xl">
+      <div class="p-5 border-b border-surface-container flex justify-between items-start">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-700">Barcode recognised</span>
+          <h3 class="font-headline font-extrabold text-xl text-[#271816] mt-1">Verify this parcel</h3>
+        </div>
+        <button onclick="window.postboxApp.closeDeliveryVerification()" class="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+      <div class="p-5 space-y-4">
+        <div class="rounded-2xl bg-surface-container-low p-4 space-y-3">
+          <div class="flex items-start gap-3">
+            <div class="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined">package_2</span>
+            </div>
+            <div class="min-w-0">
+              <p id="verify-item-name" class="font-headline font-bold text-sm text-[#271816] truncate">TechGear & Home Gadgets</p>
+              <p id="verify-tracking-number" class="font-mono text-xs text-primary mt-0.5">#AZ-9921-X01</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-xs">
+            <div>
+              <span class="block text-[9px] uppercase tracking-widest text-outline font-bold">Sender</span>
+              <span id="verify-sender" class="font-semibold text-[#271816]">Amazon.com</span>
+            </div>
+            <div>
+              <span class="block text-[9px] uppercase tracking-widest text-outline font-bold">Destination</span>
+              <span id="verify-destination" class="font-semibold text-[#271816]">Locker #42</span>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-3 flex gap-2.5 text-xs text-emerald-900">
+          <span class="material-symbols-outlined text-lg">verified_user</span>
+          <p>Confirm only after receiving the correct parcel and checking the name or tracking number.</p>
+        </div>
+        <button id="confirm-delivery-button" onclick="window.postboxApp.confirmScannedDelivery()" data-item-id=""
+          class="w-full py-4 rounded-full bg-gradient-to-br from-[#AF101A] to-[#D32F2F] text-white font-headline font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95">
+          <span class="material-symbols-outlined">verified</span>
+          Confirm delivery
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delivery Verified Success -->
+  <div id="delivery-verified-modal" class="hidden fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-[2rem] p-6 text-center shadow-2xl space-y-4">
+      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+        <span class="material-symbols-outlined text-3xl">task_alt</span>
+      </div>
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-700">Delivery complete</span>
+        <h3 class="font-headline font-extrabold text-2xl text-[#271816] mt-1">Parcel verified</h3>
+        <p id="verified-tracking-number" class="font-mono text-sm text-primary mt-2">#AZ-9921-X01</p>
+      </div>
+      <p class="text-xs text-on-surface-variant">The delivery record and proof of receipt have been saved to your postbox history.</p>
+      <button onclick="window.postboxApp.closeDeliveryVerified()"
+        class="w-full py-3.5 rounded-full bg-[#271816] text-white font-headline font-bold text-sm active:scale-95">
+        Done
+      </button>
+    </div>
+  </div>
+
+  <!-- Unknown Barcode -->
+  <div id="unknown-scan-modal" class="hidden fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-[2rem] p-6 text-center shadow-2xl space-y-4">
+      <div class="w-14 h-14 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto">
+        <span class="material-symbols-outlined text-2xl">help</span>
+      </div>
+      <h3 class="font-headline font-extrabold text-xl text-[#271816]">Unregistered tracking code</h3>
+      <p class="text-xs text-on-surface-variant break-all">Scanned: <span id="unknown-scan-code" class="font-mono font-bold text-primary"></span></p>
+      <p class="text-xs text-on-surface-variant">Ask a sorting clerk to match this code to a parcel before confirming receipt.</p>
+      <button onclick="window.postboxApp.closeUnknownScanModal()" class="w-full py-3.5 rounded-full bg-[#271816] text-white font-headline font-bold text-sm">Close</button>
+    </div>
+  </div>
+
   <!-- 1. Digitized Letter Inspection Modal -->
   <div id="letter-preview-modal" class="hidden fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom">
