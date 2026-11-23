@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  ArrowDownLeft, ArrowLeft, ArrowRight, Bell, Boxes, Check, CheckCircle2,
+  ArrowDownLeft, ArrowRight, Bell, Boxes, Check, CheckCircle2,
   ChevronDown, ChevronRight, CircleAlert, CreditCard, FileText, Inbox,
-  LayoutDashboard, LogOut, Mail, MapPin, Menu, Package, PackageCheck,
-  Plus, QrCode, Search, Send, ShieldCheck, Smartphone, Truck, UserRound,
+  LayoutDashboard, Mail, MapPin, Package, PackageCheck,
+  QrCode, Search, Send, ShieldCheck, Smartphone, Truck,
   Wallet, X, Zap,
 } from "lucide-react";
 import { initialItems, initialLockers } from "./data.js";
@@ -81,10 +81,18 @@ function App() {
 
   const items = saved.items;
   const incoming = items.filter((item) => item.direction !== "outgoing");
-  const openCount = incoming.filter((item) => !["delivered", "ready_pickup"].includes(item.status)).length;
+  const pendingCount = incoming.filter((item) => !["delivered", "ready_pickup"].includes(item.status)).length;
+  const transitCount = incoming.filter((item) => ["in_transit", "out_for_delivery"].includes(item.status)).length;
   const currentNav = navigation[saved.role];
 
+  const stopCamera = () => {
+    setIsScanning(false);
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamRef.current = null;
+  };
+
   const changeRole = (role) => {
+    stopCamera();
     setSaved((state) => ({ ...state, role }));
     setView(role === "customer" ? "inbox" : role === "driver" ? "route" : "overview");
   };
@@ -156,8 +164,7 @@ function App() {
       try {
         const codes = await detector.detect(videoRef.current);
         if (codes.length && active) {
-          setIsScanning(false);
-          streamRef.current?.getTracks().forEach((track) => track.stop());
+          stopCamera();
           resolveScan(codes[0].rawValue);
           return;
         }
@@ -171,6 +178,7 @@ function App() {
   }, [isScanning, items]);
 
   const navigate = (id) => {
+    if (view === "scan" && id !== "scan") stopCamera();
     setView(id);
     setSearch("");
   };
@@ -188,7 +196,7 @@ function App() {
           {currentNav.map(({ id, label, icon: Icon }) => (
             <button key={id} className={`nav-link ${view === id ? "active" : ""}`} onClick={() => navigate(id)}>
               <Icon size={18} /><span>{label}</span>
-              {id === "inbox" && openCount > 0 && <span className="nav-count">{openCount}</span>}
+              {id === "inbox" && pendingCount > 0 && <span className="nav-count">{pendingCount}</span>}
             </button>
           ))}
         </nav>
@@ -222,13 +230,13 @@ function App() {
         {showNotifications && <div className="notification-popover"><strong>Recent updates</strong><p><Truck size={15} /> Van 04 is on the way with your parcel.</p><p><Mail size={15} /> New digital mail is in Postbox #104.</p></div>}
 
         <div className="content">
-          {saved.role === "customer" && view === "inbox" && <CustomerHome items={incoming} openCount={openCount} daysRemaining={saved.daysRemaining} onNavigate={navigate} onSelect={setSelected} />}
+          {saved.role === "customer" && view === "inbox" && <CustomerHome items={incoming} transitCount={transitCount} daysRemaining={saved.daysRemaining} onNavigate={navigate} onSelect={setSelected} />}
           {saved.role === "customer" && view === "tracking" && <Tracking items={items} onSelect={setSelected} />}
           {saved.role === "customer" && view === "send" && <SendParcel onCreated={(item) => { setSaved((state) => ({ ...state, items: [item, ...state.items] })); setToast(`Parcel created · ${item.trackingNumber}`); navigate("tracking"); }} />}
           {saved.role === "customer" && view === "account" && <Account daysRemaining={saved.daysRemaining} onRenew={(days) => { setSaved((state) => ({ ...state, daysRemaining: state.daysRemaining + days })); setToast("Demo renewal complete · no payment was collected."); }} />}
-          {saved.role === "driver" && view === "route" && <DriverRoute items={items} onScan={() => navigate("scan")} onDeliver={confirmDelivery} />}
-          {saved.role === "driver" && view === "scan" && <Scanner videoRef={videoRef} scanning={isScanning} cameraError={cameraError} onStartCamera={startCamera} onManualScan={resolveScan} />}
-          {saved.role === "supervisor" && view === "overview" && <SupervisorOverview items={items} lockers={saved.lockers} onNavigate={navigate} />}
+          {saved.role === "driver" && view === "route" && <DriverRoute items={items} onScan={() => navigate("scan")} />}
+          {saved.role === "driver" && view === "scan" && <Scanner videoRef={videoRef} scanning={isScanning} cameraError={cameraError} onStartCamera={startCamera} onStopCamera={stopCamera} onManualScan={resolveScan} />}
+          {saved.role === "supervisor" && view === "overview" && <SupervisorOverview items={items} lockers={saved.lockers} onNavigate={navigate} onSelect={setSelected} />}
           {saved.role === "supervisor" && view === "intake" && <MailIntake onIntake={(item) => { setSaved((state) => ({ ...state, items: [item, ...state.items] })); setToast(`Mail scanned into Postbox #104 · ${item.trackingNumber}`); }} />}
           {saved.role === "supervisor" && view === "lockers" && <LockerManagement lockers={saved.lockers} onUnlock={(id) => { setSaved((state) => ({ ...state, lockers: state.lockers.map((locker) => locker.id === id ? { ...locker, state: "Available", parcel: "—" } : locker) })); setToast(`Locker ${id} released for collection.`); }} />}
         </div>
@@ -259,7 +267,7 @@ function PageHeader({ eyebrow, title, description, action }) {
   return <div className="page-header"><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1>{description && <p className="page-description">{description}</p>}</div>{action}</div>;
 }
 
-function CustomerHome({ items, openCount, daysRemaining, onNavigate, onSelect }) {
+function CustomerHome({ items, transitCount, daysRemaining, onNavigate, onSelect }) {
   const [filter, setFilter] = useState("All mail");
   const [search, setSearch] = useState("");
   const outstanding = items.filter((item) => item.status !== "delivered" && item.status !== "ready_pickup");
@@ -276,7 +284,7 @@ function CustomerHome({ items, openCount, daysRemaining, onNavigate, onSelect })
       <div className="postmark" aria-hidden="true"><Mail size={82} strokeWidth={0.9} /></div>
     </section>
     <div className="stats-grid">
-      <StatCard icon={Inbox} label="Items in transit" value={String(openCount).padStart(2, "0")} caption="Across all deliveries" tone="red" />
+      <StatCard icon={Inbox} label="Items in transit" value={String(transitCount).padStart(2, "0")} caption="Across all deliveries" tone="red" />
       <StatCard icon={PackageCheck} label="Ready to collect" value={items.filter((item) => item.status === "ready_pickup").length.toString().padStart(2, "0")} caption="Waiting at your post office" tone="green" />
       <StatCard icon={Wallet} label="Membership" value={`${daysRemaining} days`} caption="Next renewal · Dec 5" tone="gold" />
     </div>
@@ -323,18 +331,18 @@ function DeliveryDialog({ item, onClose, onConfirm }) {
   </section></div>;
 }
 
-function Scanner({ videoRef, scanning, cameraError, onStartCamera, onManualScan }) {
+function Scanner({ videoRef, scanning, cameraError, onStartCamera, onStopCamera, onManualScan }) {
   const [code, setCode] = useState("");
   const submit = (event) => { event.preventDefault(); onManualScan(code); };
   return <><PageHeader eyebrow="COURIER TOOLS" title="Verify a delivery" description="Scan the barcode on the parcel, then confirm the right item reached its recipient." /><div className="scanner-layout">
-    <section className="scanner-card"><div className="scanner-preview">{scanning ? <video ref={videoRef} autoPlay muted playsInline /> : <div className="scan-placeholder"><span className="scan-graphic"><QrCode size={58} strokeWidth={1.2} /></span><span>Place a parcel barcode inside the frame</span></div>}<div className="scan-frame"><i /><i /><i /><i /></div>{scanning && <span className="scan-live"><span className="online-dot" /> CAMERA ACTIVE</span>}</div><div className="scanner-controls"><div><strong>Scan a parcel label</strong><span>Use the rear camera in a well-lit area.</span></div><button className="button button-red" onClick={scanning ? undefined : onStartCamera} disabled={scanning}>{scanning ? <><span className="spinner" /> Scanning…</> : <><QrCode size={17} /> Start camera</>}</button></div>{cameraError && <p className="form-message warning"><CircleAlert size={16} />{cameraError}</p>}</section>
+    <section className="scanner-card"><div className="scanner-preview">{scanning ? <video ref={videoRef} autoPlay muted playsInline /> : <div className="scan-placeholder"><span className="scan-graphic"><QrCode size={58} strokeWidth={1.2} /></span><span>Place a parcel barcode inside the frame</span></div>}<div className="scan-frame"><i /><i /><i /><i /></div>{scanning && <span className="scan-live"><span className="online-dot" /> CAMERA ACTIVE</span>}</div><div className="scanner-controls"><div><strong>Scan a parcel label</strong><span>Use the rear camera in a well-lit area.</span></div><button className={`button ${scanning ? "button-outline" : "button-red"}`} onClick={scanning ? onStopCamera : onStartCamera}>{scanning ? <><X size={16} /> Stop camera</> : <><QrCode size={17} /> Start camera</>}</button></div>{cameraError && <p className="form-message warning"><CircleAlert size={16} />{cameraError}</p>}</section>
     <section className="manual-card"><span className="manual-icon"><PackageCheck size={21} /></span><p className="eyebrow">NO CAMERA? NO PROBLEM.</p><h2>Enter the tracking number</h2><p>Read the number printed below the barcode and type it here.</p><form className="manual-form" onSubmit={submit}><label htmlFor="tracking-code">Tracking number</label><input id="tracking-code" autoComplete="off" placeholder="e.g. AZ-9921-X01" value={code} onChange={(event) => setCode(event.target.value)} required /><button className="button button-dark full-width" type="submit">Find parcel <ArrowRight size={16} /></button></form><div className="security-note"><ShieldCheck size={16} /> Parcel details are checked before delivery is recorded.</div></section>
   </div><div className="test-scan-row"><strong>Demo shortcuts</strong><button className="text-button" onClick={() => onManualScan("AZ-9921-X01")}>Open test parcel <ArrowRight size={15} /></button></div></>;
 }
 
-function DriverRoute({ items, onScan, onDeliver }) {
+function DriverRoute({ items, onScan }) {
   const stops = items.filter((item) => item.type === "package" && item.status !== "delivered");
-  return <><PageHeader eyebrow="COURIER NAVIGATION" title="Good morning, Kondwani" description="Your route for today · Blantyre Central · Van 04" action={<span className="live-badge"><span className="online-dot" /> ON DUTY</span>} /><section className="driver-summary"><div className="driver-metric"><span className="metric-icon"><MapPin size={19} /></span><span><small>ROUTE PROGRESS</small><strong>{Math.max(1, 3 - stops.length)} of 3 stops</strong></span></div><div className="progress-track"><span style={{ width: `${Math.min(90, 35 + (3 - stops.length) * 22)}%` }} /></div><div className="route-points"><span>Blantyre GPO</span><span>Victoria Avenue</span><span>Customer stops</span></div></section><div className="section-heading route-heading"><div><p className="eyebrow">DELIVERY MANIFEST</p><h2>{stops.length} remaining stops</h2></div><button className="button button-red" onClick={onScan}><QrCode size={17} /> Scan parcel</button></div><div className="stop-list">{stops.map((item, index) => <article className="stop-card" key={item.id}><span className="stop-index">{String(index + 1).padStart(2, "0")}</span><div className="stop-info"><span className="stop-type">{item.type.toUpperCase()} · {item.trackingNumber}</span><strong>{item.title}</strong><span>{item.sender} · {item.pickupPoint}</span><span className="stop-address"><MapPin size={14} /> Blantyre · Southern Region</span></div><div className="stop-actions"><span className={`status-pill ${statusTone(item.status)}`}><i />{item.statusLabel}</span><button className="button button-outline" onClick={onScan}><QrCode size={15} /> Verify</button><button className="button button-dark" onClick={() => onDeliver(item.id)}>Confirm</button></div></article>)}{stops.length === 0 && <div className="empty-state"><CheckCircle2 size={25} /><strong>Route complete</strong><span>All assigned parcel deliveries have been confirmed.</span></div>}</div><section className="driver-note"><Zap size={18} /><div><strong>Delivery proof is recorded automatically</strong><span>Scanning a known parcel adds a verified time and recipient record to its delivery history.</span></div></section></>;
+  return <><PageHeader eyebrow="COURIER NAVIGATION" title="Good morning, Kondwani" description="Your route for today · Blantyre Central · Van 04" action={<span className="live-badge"><span className="online-dot" /> ON DUTY</span>} /><section className="driver-summary"><div className="driver-metric"><span className="metric-icon"><MapPin size={19} /></span><span><small>ROUTE PROGRESS</small><strong>{Math.max(1, 3 - stops.length)} of 3 stops</strong></span></div><div className="progress-track"><span style={{ width: `${Math.min(90, 35 + (3 - stops.length) * 22)}%` }} /></div><div className="route-points"><span>Blantyre GPO</span><span>Victoria Avenue</span><span>Customer stops</span></div></section><div className="section-heading route-heading"><div><p className="eyebrow">DELIVERY MANIFEST</p><h2>{stops.length} remaining stops</h2></div><button className="button button-red" onClick={onScan}><QrCode size={17} /> Scan parcel</button></div><div className="stop-list">{stops.map((item, index) => <article className="stop-card" key={item.id}><span className="stop-index">{String(index + 1).padStart(2, "0")}</span><div className="stop-info"><span className="stop-type">{item.type.toUpperCase()} · {item.trackingNumber}</span><strong>{item.title}</strong><span>{item.sender} · {item.pickupPoint}</span><span className="stop-address"><MapPin size={14} /> Blantyre · Southern Region</span></div><div className="stop-actions"><span className={`status-pill ${statusTone(item.status)}`}><i />{item.statusLabel}</span><button className="button button-outline" onClick={onScan}><QrCode size={15} /> Scan & verify</button></div></article>)}{stops.length === 0 && <div className="empty-state"><CheckCircle2 size={25} /><strong>Route complete</strong><span>All assigned parcel deliveries have been confirmed.</span></div>}</div><section className="driver-note"><Zap size={18} /><div><strong>Delivery proof is recorded automatically</strong><span>Scanning a known parcel adds a verified time and recipient record to its delivery history.</span></div></section></>;
 }
 
 function Account({ daysRemaining, onRenew }) {
@@ -354,10 +362,10 @@ function SendParcel({ onCreated }) {
   return <><PageHeader eyebrow="OUTGOING MAIL" title="Send a parcel" description="Arrange a Malawi Posts courier pickup and create a trackable shipment." /><form className="shipping-form" onSubmit={handleSubmit}><section className="form-card"><p className="eyebrow">01 · RECIPIENT</p><h2>Where is it going?</h2><div className="field-grid"><label>Recipient full name<input name="recipient" placeholder="e.g. Grace Mvula" required /></label><label>Destination address<input name="destination" placeholder="Town, street or postbox" required /></label></div></section><section className="form-card"><p className="eyebrow">02 · PARCEL</p><h2>Tell us what you’re sending</h2><div className="field-grid"><label>Parcel description<input name="description" placeholder="e.g. Documents and books" required /></label><label>Weight (kg)<input name="weight" type="number" min="0.1" step="0.1" placeholder="1.0" required /></label><label>Delivery service<select value={service} onChange={(event) => setService(event.target.value)}><option>Express courier</option><option>Standard post</option><option>Registered secure delivery</option></select></label></div></section><div className="shipping-total"><span><strong>{service}</strong><small>Pickup arranged after shipment creation</small></span><strong>{service === "Express courier" ? "MK 4,500" : service === "Standard post" ? "MK 2,200" : "MK 6,000"}</strong></div><button className="button button-red" type="submit">Create shipment <ArrowRight size={17} /></button></form></>;
 }
 
-function SupervisorOverview({ items, lockers, onNavigate }) {
+function SupervisorOverview({ items, lockers, onNavigate, onSelect }) {
   const available = lockers.filter((locker) => locker.state === "Available").length;
   const pending = items.filter((item) => item.status !== "delivered").length;
-  return <><PageHeader eyebrow="BLANTYRE GPO · HUB OPERATIONS" title="Good morning, Chifundo" description="Here is the latest activity across the central sorting hub." action={<span className="station-chip"><MapPin size={14} /> BLANTYRE GPO</span>} /><div className="stats-grid supervisor-stats"><StatCard icon={Boxes} label="Locker capacity" value={`${available}/${lockers.length}`} caption="Compartments available" tone="red" /><StatCard icon={Package} label="Parcels in process" value={String(pending).padStart(2, "0")} caption="Awaiting final delivery" tone="gold" /><StatCard icon={CheckCircle2} label="Deliveries verified" value={items.filter((item) => item.status === "delivered").length.toString().padStart(2, "0")} caption="Recorded in the mail ledger" tone="green" /></div><section className="section"><div className="section-heading"><div><p className="eyebrow">HUB WORKSPACE</p><h2>Operations</h2></div></div><div className="operations-grid"><button className="operation-card" onClick={() => onNavigate("intake")}><span className="operation-icon red"><ArrowDownLeft size={20} /></span><strong>Register incoming mail</strong><span>Log a new item and notify its postbox owner.</span><ArrowRight size={17} /></button><button className="operation-card" onClick={() => onNavigate("lockers")}><span className="operation-icon green"><Boxes size={20} /></span><strong>Manage smart lockers</strong><span>Review compartment availability and collection status.</span><ArrowRight size={17} /></button></div></section><section className="section"><div className="section-heading"><div><p className="eyebrow">LATEST ACTIVITY</p><h2>Recent mail</h2></div></div><MailList items={items.slice(0, 4)} onSelect={() => {}} /></section></>;
+  return <><PageHeader eyebrow="BLANTYRE GPO · HUB OPERATIONS" title="Good morning, Chifundo" description="Here is the latest activity across the central sorting hub." action={<span className="station-chip"><MapPin size={14} /> BLANTYRE GPO</span>} /><div className="stats-grid supervisor-stats"><StatCard icon={Boxes} label="Locker capacity" value={`${available}/${lockers.length}`} caption="Compartments available" tone="red" /><StatCard icon={Package} label="Parcels in process" value={String(pending).padStart(2, "0")} caption="Awaiting final delivery" tone="gold" /><StatCard icon={CheckCircle2} label="Deliveries verified" value={items.filter((item) => item.status === "delivered").length.toString().padStart(2, "0")} caption="Recorded in the mail ledger" tone="green" /></div><section className="section"><div className="section-heading"><div><p className="eyebrow">HUB WORKSPACE</p><h2>Operations</h2></div></div><div className="operations-grid"><button className="operation-card" onClick={() => onNavigate("intake")}><span className="operation-icon red"><ArrowDownLeft size={20} /></span><strong>Register incoming mail</strong><span>Log a new item and notify its postbox owner.</span><ArrowRight size={17} /></button><button className="operation-card" onClick={() => onNavigate("lockers")}><span className="operation-icon green"><Boxes size={20} /></span><strong>Manage smart lockers</strong><span>Review compartment availability and collection status.</span><ArrowRight size={17} /></button></div></section><section className="section"><div className="section-heading"><div><p className="eyebrow">LATEST ACTIVITY</p><h2>Recent mail</h2></div></div><MailList items={items.slice(0, 4)} onSelect={onSelect} /></section></>;
 }
 
 function MailIntake({ onIntake }) {
