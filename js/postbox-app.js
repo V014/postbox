@@ -265,7 +265,7 @@
         } else if (role === 'admin') {
           roleBanner.innerHTML = `
             <div class="bg-gradient-to-r from-indigo-900 to-purple-800 text-white px-4 py-2 text-xs flex justify-between items-center shadow-md">
-              <span class="flex items-center gap-2 font-semibold"><span class="material-symbols-outlined text-sm">admin_panel_settings</span> Postmaster Clerk View: Blantyre Hub</span>
+              <span class="flex items-center gap-2 font-semibold"><span class="material-symbols-outlined text-sm">admin_panel_settings</span> Supervisor View: Blantyre Hub</span>
               <button onclick="window.postboxStore.setRole('customer')" class="underline hover:text-white/80 text-[11px] font-bold">Switch to Customer</button>
             </div>
           `;
